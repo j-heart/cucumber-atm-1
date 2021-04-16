@@ -31,7 +31,7 @@ public class StepDefATM {
 
     @When("I login to ATM with id {int} and pin {int}")
     public void i_login_to_ATM_with_id_and_pin(int id, int pin) {
-        validLogin = atm.validateCustomer(id, pin);
+        validLogin = atm.validateCustomer(id, pin);     //Match between ID and Pin
     }
 
     @Then("I can login")
@@ -54,6 +54,17 @@ public class StepDefATM {
         assertThrows(NotEnoughBalanceException.class,
                 () -> atm.withdraw(amount));
     }
+
+    @When("I deposit {float} to ATM")
+    public void i_deposit_to_atm_more_than_0(double amount) {
+        atm.deposit(amount);
+    }
+
+    @When("I lessdeposit {float} to ATM")
+    public void i_deposit_to_atm_less_than_0(double amount) {
+        atm.deposit(0);
+    }
+
     @Then("my account balance is {float}")
     public void my_account_balance_is(double balance) {
         assertEquals(balance, atm.getBalance());
@@ -67,7 +78,7 @@ public class StepDefATM {
     @Then("customer id {int} account balance is {float}")
     public void customer_id_account_balance_is(int id, double balance) {
         assertEquals(balance,
-                     bank.findCustomer(id).getAccount().getBalance());
+                bank.findCustomer(id).getAccount().getBalance());
     }
 
 }
